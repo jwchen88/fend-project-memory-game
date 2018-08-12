@@ -80,13 +80,15 @@ function shuffle(array) {
 //click cards
 allCards.forEach(function(card){
   card.addEventListener('click',function(evt){
-    //check if cards already clicked first
+    //check if cards already clicked first and can't click more than two cards
     if(!card.classList.contains('open')&&!card.classList.contains('show')&&!card.classList.contains('match')&&openCards.length<2){
     openCards.push(card);
     card.classList.add('open','show');
     if (openCards.length==2){
       //count Moves
       countMoves();
+      //remove stars
+      removeStar();
       //match Cards
       if(openCards[0].dataset.card===openCards[1].dataset.card){
         matched()
@@ -101,6 +103,14 @@ function countMoves(){
   moves++;
   const moveCounter=document.querySelector('.moves');
   moveCounter.innerHTML=moves;
+}
+
+function removeStar(){
+  if(moves==17){
+    stars.children[0].style.display='none';
+  }else if(moves==25){
+    stars.children[1].style.display='none';
+  }
 }
 
 function matched(){
@@ -119,11 +129,9 @@ function unmatched(){
   setTimeout(function(){
     openCards[0].classList.remove('open');
     openCards[0].classList.remove('show');
-    openCards[0].classList.remove("unmatched");
 
     openCards[1].classList.remove('open');
     openCards[1].classList.remove('show');
-    openCards[1].classList.remove("unmatched");
 
     openCards=[];
 },1000);
