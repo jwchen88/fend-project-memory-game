@@ -1,7 +1,7 @@
 /*
  * Create a list that holds all of your cards
  */
- const cards=["fa-diamond",
+ let cards=["fa-diamond",
          "fa-paper-plane-o",
          "fa-anchor",
          "fa-bolt",
@@ -22,6 +22,9 @@ function generateCard(card){
   return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
+let moves=0;
+let moveCounter=document.querySelector('.moves');
+let stars=document.querySelector('.stars');
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -31,15 +34,22 @@ function generateCard(card){
 
  function initGame(){
    const deck=document.querySelector('.deck');
-   const moveCounter=document.querySelector('.moves');
+   let moveCounter=document.querySelector('.moves');
    const cardHtml=shuffle(cards).map(function(card){
      return generateCard(card);
    });
-
    deck.innerHTML=cardHtml.join('');
+
+   moves=0;
+   moveCounter.innerHTML=moves;
+
+
  }
 
  initGame();
+
+ const allCards=document.querySelectorAll('.card');
+ let openCards=[];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -56,10 +66,6 @@ function shuffle(array) {
     return array;
 }
 
-const allCards=document.querySelectorAll('.card');
-let openCards=[];
-let moves=0;
-
 /*
  * set up the event listener for a card. If a card is clicked:
  *  - display the card's symbol (put this functionality in another function that you call from this one)
@@ -75,11 +81,12 @@ let moves=0;
 allCards.forEach(function(card){
   card.addEventListener('click',function(evt){
     //check if cards already clicked first
-    if(!card.classList.contains('open')&&!card.classList.contains('show')&&!card.classList.contains('match')){
+    if(!card.classList.contains('open')&&!card.classList.contains('show')&&!card.classList.contains('match')&&openCards.length<2){
     openCards.push(card);
     card.classList.add('open','show');
     if (openCards.length==2){
       //count Moves
+      countMoves();
       //match Cards
       if(openCards[0].dataset.card===openCards[1].dataset.card){
         matched()
@@ -89,6 +96,12 @@ allCards.forEach(function(card){
     }}
   });
 });
+
+function countMoves(){
+  moves++;
+  const moveCounter=document.querySelector('.moves');
+  moveCounter.innerHTML=moves;
+}
 
 function matched(){
   openCards[0].classList.add('match');
@@ -103,27 +116,15 @@ function matched(){
 }
 
 function unmatched(){
-  //disable();
   setTimeout(function(){
     openCards[0].classList.remove('open');
     openCards[0].classList.remove('show');
+    openCards[0].classList.remove("unmatched");
 
     openCards[1].classList.remove('open');
     openCards[1].classList.remove('show');
-  //enable();
+    openCards[1].classList.remove("unmatched");
+
     openCards=[];
 },1000);
-}
-
-//Can't click cards after 2 Cards
-function disable(){
-  array.prototype.filter.call(cards,function(card){
-    card.classList.add('disabled');
-  });
-}
-
-function enable(){
-  array.prototype.filter.call(cards,function(card){
-    card.classList.remove('disabled');
-});
 }
