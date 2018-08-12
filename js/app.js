@@ -25,6 +25,10 @@ function generateCard(card){
 let moves=0;
 let moveCounter=document.querySelector('.moves');
 let stars=document.querySelector('.stars');
+let newStart=true;
+let time=0;
+let timer=document.querySelector('.timer');
+
 /*
  * Display the cards on the page
  *   - shuffle the list of cards using the provided "shuffle" method below
@@ -80,6 +84,11 @@ function shuffle(array) {
 //click cards
 allCards.forEach(function(card){
   card.addEventListener('click',function(evt){
+    //start timer at the first click
+    if(newStart){
+      newStart=false;
+      startTimer();
+    }
     //check if cards already clicked first and can't click more than two cards
     if(!card.classList.contains('open')&&!card.classList.contains('show')&&!card.classList.contains('match')&&openCards.length<2){
     openCards.push(card);
@@ -135,4 +144,12 @@ function unmatched(){
 
     openCards=[];
 },1000);
+}
+
+function startTimer(){
+  if(newStart==false){
+    setTimeout('startTimer()',1000);
+    timer.innerHTML=time;
+    time++;
+  }
 }
