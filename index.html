@@ -7,6 +7,7 @@
     <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
     <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
     <link rel="stylesheet" href="css/app.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -26,7 +27,7 @@
 
           <span class="timer">0</span> Seconds
 
-            <div class="restart">
+            <div class="restart" onclick="initGame()">
         		<i class="fa fa-repeat"></i>
         	</div>
         </section>
@@ -34,6 +35,22 @@
         <ul class="deck">
         </ul>
     </div>
+
+    <div class="modal">
+      <h1>Congratulations!</h1>
+      <div class="score">
+        <span class="endTime"></span>
+        <span class="endStars"></span>
+        <span class="endMoves"></span>
+      </div>
+
+      <div class="modal-buttons">
+        <button id="replay">Play Again</button>
+        <button id="cancel">Cancel</button>
+      </div>
+    </div>
+
+    <div class="modal-overlay"></div>
 
     <script src="js/app.js"></script>
 </body>

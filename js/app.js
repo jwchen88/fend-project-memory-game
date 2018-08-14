@@ -22,12 +22,20 @@ function generateCard(card){
   return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
+let openCards=[];
+
 let moves=0;
 let moveCounter=document.querySelector('.moves');
-let stars=document.querySelector('.stars');
+
 let newStart=true;
+
+let stars=document.querySelector('.stars');
+
 let time=0;
 let timer=document.querySelector('.timer');
+
+let matchedCards=document.querySelector('.matched');
+
 
 /*
  * Display the cards on the page
@@ -38,22 +46,23 @@ let timer=document.querySelector('.timer');
 
  function initGame(){
    const deck=document.querySelector('.deck');
-   let moveCounter=document.querySelector('.moves');
    const cardHtml=shuffle(cards).map(function(card){
      return generateCard(card);
    });
    deck.innerHTML=cardHtml.join('');
 
+   newStart=true;
+
    moves=0;
    moveCounter.innerHTML=moves;
 
+   time=0;
+   timer.innerHTML=time;
 
+   clickCards();
  }
 
  initGame();
-
- const allCards=document.querySelectorAll('.card');
- let openCards=[];
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -81,6 +90,8 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+function clickCards(){
+let allCards=document.querySelectorAll('.card');
 //click cards
 allCards.forEach(function(card){
   card.addEventListener('click',function(evt){
@@ -100,13 +111,16 @@ allCards.forEach(function(card){
       removeStar();
       //match Cards
       if(openCards[0].dataset.card===openCards[1].dataset.card){
-        matched()
+        matched();
+        //finshi game if all cards are matched
+        finishGame();
       } else {
-        unmatched()
+        unmatched();
       }
     }}
   });
 });
+}
 
 function countMoves(){
   moves++;
@@ -152,4 +166,80 @@ function startTimer(){
     timer.innerHTML=time;
     time++;
   }
+}
+
+/*
+ * Congratulations Popup
+ */
+ let modal= document.querySelector('.modal');
+ let modalOverlay= document.querySelector('.modal-overlay');
+
+ function finishGame(){
+   if (document.querySelectorAll('.match').length===16){
+     newStart=true;
+     openModal();
+     showResult();
+   }
+ }
+
+ function openModal(){
+   modal.addEventListener('keydown', trapTabKey);
+   modalOverlay.addEventListener('click', closeModal);
+   //Play again button
+   let replayBtn=modal.querySelector('#replay');
+   replayBtn.addEventListener('click',replay);
+   //Cancel button
+   let cancelBtu=modal.querySelector('#cancel');
+   cancelBtu.addEventListener('click', closeModal);
+
+   let focusable=modal.querySelectorAll('button, [href], input, [tabindex="0"]');
+   let first=focusable[0];
+   let last=focusable[focusable.length - 1];
+
+   modal.style.display='block';
+   modalOverlay.style.display='block';
+
+   first.focus();
+
+   function trapTabKey(e){
+     if(e.keyCode === 9){
+       if(e.shiftKey){
+         if(document.activeElement===first){
+           e.preventDefault();
+           last.focus();
+         }
+       } else {
+         if(document.activeElement===last){
+           e.preventDefault();
+           first.focus();
+         }
+       }
+     }
+     if (e.keyCode === 27){
+       closeModal();
+     }
+   }
+ }
+
+function replay(){
+  closeModal();
+  initGame();
+}
+
+function closeModal(){
+  modal.style.display="none";
+  modalOverlay.style.display="none";
+}
+
+function showResult(){
+  const endTime=document.querySelector('.endTime');
+  const countingTime=document.querySelector('.timer').innerHTML;
+  endTime.innerHTML =`Time: ${countingTime} Seconds`;
+
+  const endStars=document.querySelector('.endStars');
+  const visibleStars=document.querySelector('.stars').innerHTML;
+  endStars.innerHTML=`Star Rating: ${visibleStars}`;
+
+  const endMoves=document.querySelector('.endMoves');
+  endMoves.innerHTML = `Moves: ${moves}`;
 }

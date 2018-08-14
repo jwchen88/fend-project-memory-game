@@ -107,3 +107,54 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+/*
+ *Styles for modal
+ */
+ .modal{
+   width: 50%;
+   border-radius: 4px;
+   margin-left: auto;
+   margin-right: auto;
+   padding: 24px;
+   background-color:#fff;
+   z-index: 3;
+   position:fixed;
+   top: 25%;
+   left: 25%;
+   display: none;
+ }
+
+ .modal-overlay{
+   width: 100%;
+   height: 100%;
+   z-index: 2;
+   background-color: #000;
+   opacity: 0.5;
+   position: fixed;
+   top: 0;
+   left: 0;
+   display: none;
+   margin: 0;
+   padding: 0;
+ }
+
+ .modal h1{
+   text-align: center;
+ }
+
+ .score{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ }
+
+ .endStars li {
+     list-style: none;
+     display: inline-block;
+ }
+
+ .modal-buttons{
+   display: flex;
+   justify-content: space-around;
+ }
