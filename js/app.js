@@ -1,22 +1,16 @@
+"use strict";
 /*
  * Create a list that holds all of your cards
  */
- let cards=["fa-diamond",
+const cardList=["fa-diamond",
          "fa-paper-plane-o",
          "fa-anchor",
          "fa-bolt",
          "fa-cube",
-         "fa-anchor",
          "fa-leaf",
          "fa-bicycle",
-         "fa-diamond",
-         "fa-bomb",
-         "fa-leaf",
-         "fa-bomb",
-         "fa-bolt",
-         "fa-bicycle",
-         "fa-paper-plane-o",
-         "fa-cube"];
+         "fa-bomb"];
+const cards=cardList.concat(cardList);
 
 function generateCard(card){
   return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
@@ -55,6 +49,9 @@ let matchedCards=document.querySelector('.matched');
 
    moves=0;
    moveCounter.innerHTML=moves;
+   //reset stars
+   stars.children[0].style.display='';
+   stars.children[1].style.display='';
 
    time=0;
    timer.innerHTML=time;
@@ -66,7 +63,7 @@ let matchedCards=document.querySelector('.matched');
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    let currentIndex = array.length, temporaryValue, randomIndex;
 
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
