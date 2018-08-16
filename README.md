@@ -15,6 +15,6 @@ There will be a popup showing the game results after matching all the cards.
 
 ## Acknowledgements
 
-Bootstrap
-Google Fonts
+Bootstrap, 
+Google Fonts, 
 jQuery
